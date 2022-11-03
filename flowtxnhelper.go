@@ -168,7 +168,7 @@ func PrintBlock(block *flow.Block, err error) {
 	fmt.Printf("timestamp: %s\n\n", block.Timestamp)
 }
 
-func checkFileExists(fileName string) bool {
+func CheckFileExists(fileName string) bool {
 	_, error := os.Stat(fileName)
 	return !errors.Is(error, os.ErrNotExist)
 }
