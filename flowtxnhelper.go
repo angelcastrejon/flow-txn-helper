@@ -2,6 +2,7 @@ package flowtxnhelper
 
 import (
 	"context"
+	"crypto/rand"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -171,4 +172,16 @@ func PrintBlock(block *flow.Block, err error) {
 func CheckFileExists(fileName string) bool {
 	_, error := os.Stat(fileName)
 	return !errors.Is(error, os.ErrNotExist)
+}
+
+// RandomPrivateKey returns a randomly generated ECDSA P-256 private key.
+func RandomPrivateKey() crypto.PrivateKey {
+	seed := make([]byte, crypto.MinSeedLength)
+	_, err := rand.Read(seed)
+	HandleError(err)
+
+	privateKey, err := crypto.GeneratePrivateKey(crypto.ECDSA_P256, seed)
+	HandleError(err)
+
+	return privateKey
 }
