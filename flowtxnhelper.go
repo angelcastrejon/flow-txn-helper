@@ -3,6 +3,7 @@ package flowtxnhelper
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -165,4 +166,9 @@ func PrintBlock(block *flow.Block, err error) {
 	fmt.Printf("\nID: %s\n", block.ID)
 	fmt.Printf("height: %d\n", block.Height)
 	fmt.Printf("timestamp: %s\n\n", block.Timestamp)
+}
+
+func checkFileExists(fileName string) bool {
+	_, error := os.Stat(fileName)
+	return !errors.Is(error, os.ErrNotExist)
 }
