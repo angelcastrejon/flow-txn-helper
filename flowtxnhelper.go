@@ -185,3 +185,10 @@ func RandomPrivateKey() crypto.PrivateKey {
 
 	return privateKey
 }
+
+func NewAccountKey(pk crypto.PrivateKey) *flow.AccountKey {
+	return flow.NewAccountKey().
+		FromPrivateKey(pk).
+		SetHashAlgo(crypto.SHA3_256).
+		SetWeight(flow.AccountKeyWeightThreshold)
+}
