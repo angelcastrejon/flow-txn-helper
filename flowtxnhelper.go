@@ -64,7 +64,7 @@ func init() {
 }
 
 
-func Account(flowClient access.Client) (flow.Address, *flow.AccountKey, crypto.Signer) {
+func Account(flowClient access.Client, key string, address string) (flow.Address, *flow.AccountKey, crypto.Signer) {
 	privateKey, err := crypto.DecodePrivateKeyHex(crypto.ECDSA_P256, conf.Accounts.Service.Key)
 	HandleError(err)
 
@@ -107,15 +107,15 @@ func NewMainnetFlowGRPCClient() (*grpc.Client, error) {
 	return c, err
 }
 
-func NewTestnetClient() (*grpc.Client, flow.Address, *flow.AccountKey, crypto.Signer, error) {
+func NewTestnetClient(key string, address string) (*grpc.Client, flow.Address, *flow.AccountKey, crypto.Signer, error) {
 	c, err := NewTestnetFlowGRPCClient()
-	addr, accountKey, signer := Account(c)
+	addr, accountKey, signer := Account(c, key, address)
 	return c, addr, accountKey, signer, err
 }
 
-func NewMainnetClient() (*grpc.Client, flow.Address, *flow.AccountKey, crypto.Signer, error) {
+func NewMainnetClient(key string, address string) (*grpc.Client, flow.Address, *flow.AccountKey, crypto.Signer, error) {
 	c, err := NewMainnetFlowGRPCClient()
-	addr, accountKey, signer := Account(c)
+	addr, accountKey, signer := Account(c, key, address)
 	return c, addr, accountKey, signer, err
 }
 
