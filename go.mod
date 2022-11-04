@@ -1,4 +1,4 @@
-module github.com/angelcastrejon/flowtxnhelper
+module github.com/angelcastrejon/flowtxnhelper/v0.0.0-alpha.1
 
 go 1.19
 
