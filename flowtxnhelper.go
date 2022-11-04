@@ -3,7 +3,6 @@ package flowtxnhelper
 import (
 	"context"
 	"crypto/rand"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -16,59 +15,11 @@ import (
 	"github.com/onflow/flow-go-sdk/crypto"
 )
 
-const configPath = "./flow.json"
-
-var (
-	conf config
-)
-
-type config struct {
-	Accounts struct {
-		Service struct {
-			Address string `json:"address"`
-			Key     string `json:"key"`
-		} `json:"testnet-admin"`
-	}
-	Contracts map[string]string `json:"contracts"`
-}
-
-// ReadFile reads a file from the file system.
-func ReadFile(path string) string {
-	contents, err := os.ReadFile(path)
-	HandleError(err)
-
-	return string(contents)
-}
-
-func readConfig() config {
-	f, err := os.Open(configPath)
-	if err != nil {
-		if os.IsNotExist(err) {
-			fmt.Println("./flow.json not found")
-		} else {
-			fmt.Printf("Failed to load config from %s: %s\n", configPath, err.Error())
-		}
-
-		os.Exit(1)
-	}
-
-	var conf config
-	err = json.NewDecoder(f).Decode(&conf)
-	HandleError(err)
-
-	return conf
-}
-
-func init() {
-	conf = readConfig()
-}
-
-
 func Account(flowClient access.Client, key string, address string) (flow.Address, *flow.AccountKey, crypto.Signer) {
-	privateKey, err := crypto.DecodePrivateKeyHex(crypto.ECDSA_P256, conf.Accounts.Service.Key)
+	privateKey, err := crypto.DecodePrivateKeyHex(crypto.ECDSA_P256, key)
 	HandleError(err)
 
-	addr := flow.HexToAddress(conf.Accounts.Service.Address)
+	addr := flow.HexToAddress(address)
 	acc, err := flowClient.GetAccount(context.Background(), addr)
 	HandleError(err)
 
