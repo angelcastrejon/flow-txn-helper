@@ -29,7 +29,6 @@ func Account(flowClient access.Client, key string, address string) (flow.Address
 	return addr, accountKey, signer
 }
 
-
 func HandleError(err error) {
 	if err != nil {
 		panic(err)
@@ -137,6 +136,7 @@ func RandomPrivateKey() crypto.PrivateKey {
 	return privateKey
 }
 
+// Generate a new AccountKey with a given weight
 func NewAccountKey(pk crypto.PrivateKey, w int) *flow.AccountKey {
 	return flow.NewAccountKey().
 		FromPrivateKey(pk).
